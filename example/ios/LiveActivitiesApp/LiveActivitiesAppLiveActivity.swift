@@ -33,6 +33,8 @@ struct LiveActivitiesAppLiveActivity: Widget {
                 jsonString: context.state.dataJsonString, key: "step")
             let distance: Int = DataProcess.int(
                 jsonString: context.state.dataJsonString, key: "distance")
+            //            let logo: String = DataProcess.string(
+            //                jsonString: context.state.dataJsonString, key: "logo")
 
             VStack(spacing: 12) {
                 HStack {
@@ -45,9 +47,25 @@ struct LiveActivitiesAppLiveActivity: Widget {
                             .foregroundStyle(.white)
                             .opacity(0.7)
                     }.frame(maxWidth: .infinity, alignment: .leading)
+                    //                    if let logoData = Data(
+                    //                        base64Encoded: logo,
+                    //                        options: .ignoreUnknownCharacters)
+                    //                    {
+                    //                        let image = UIImage(data: logoData)
+                    //                        Image(uiImage: image ?? UIImage()).resizable()
+                    //                            .frame(width: 42, height: 42)
+                    //                            .clipShape(.rect(cornerRadius: 8))
+                    //                    }
+                    //                    AsyncImage(
+                    //                        url: URL(
+                    //                            string: "https://cdn.freebiesupply.com/logos/large/2x/starbucks-coffee-logo-png-transparent.png"
+                    //                        )
+                    //                    ).frame(width: 42, height: 42)
+                    //                        .clipShape(.rect(cornerRadius: 8))
                     Image("coffee_hub").resizable()
                         .frame(width: 42, height: 42)
                         .clipShape(.rect(cornerRadius: 8))
+
                 }
                 ProgressView(
                     value: CGFloat(step),
@@ -193,10 +211,11 @@ struct LinearWithImageProgressStyle: ProgressViewStyle {
 
 // Data Model
 struct LiveActivityData: Decodable {
-    var step: Int
-    var distance: Int
-    var title: String
-    var description: String
+    var step: Int?
+    var distance: Int?
+    var title: String?
+    var description: String?
+    var logo: String?
 
     subscript(key: String) -> Any? {
         get {
@@ -209,6 +228,8 @@ struct LiveActivityData: Decodable {
                 return self.title
             case "description":
                 return self.description
+            case "logo":
+                return self.logo
             default:
                 return nil
             }
@@ -218,48 +239,25 @@ struct LiveActivityData: Decodable {
 
 // Json parser
 struct DataProcess {
-    static func isValidJson(jsonString: String) -> Bool {
-        var isValidJson: Bool = false
-
-        if let jsonDataToVerify = jsonString.data(using: String.Encoding.utf8) {
-            let result = try? JSONSerialization.jsonObject(
-                with: jsonDataToVerify)
-            isValidJson = result != nil
-
-        }
-
-        return isValidJson
-    }
-
     static func int(jsonString: String, key: String) -> Int {
-        if !isValidJson(jsonString: jsonString) {
-            return 0
-        }
-
-        let jsonData = jsonString.data(using: .utf8)!
-        guard
-            let data: LiveActivityData = try? JSONDecoder().decode(
+        if let jsonData = jsonString.data(using: .utf8) {
+            let data: LiveActivityData? = try? JSONDecoder().decode(
                 LiveActivityData.self, from: jsonData)
-        else {
+
+            return data?[key] as? Int ?? 0
+        } else {
             return 0
         }
-
-        return data[key] as? Int ?? 0
     }
 
     static func string(jsonString: String, key: String) -> String {
-        if !isValidJson(jsonString: jsonString) {
-            return ""
-        }
-
-        let jsonData = jsonString.data(using: .utf8)!
-        guard
-            let data: LiveActivityData = try? JSONDecoder().decode(
+        if let jsonData = jsonString.data(using: .utf8) {
+            let data: LiveActivityData? = try? JSONDecoder().decode(
                 LiveActivityData.self, from: jsonData)
-        else {
+
+            return data?[key] as? String ?? ""
+        } else {
             return ""
         }
-
-        return data[key] as? String ?? ""
     }
 }

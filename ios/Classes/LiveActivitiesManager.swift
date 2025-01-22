@@ -36,12 +36,13 @@ public class LiveActivitiesManager {
         let staleDate =
             staleIn != nil
             ? Calendar.current.date(
-                byAdding: .minute, value: staleIn!, to: Date.now) : nil
+                byAdding: .second, value: staleIn!, to: Date.now) : nil
 
         return .init(state: state!, staleDate: staleDate)
     }
 
-    public static func areLiveActivitiesEnabled(result: @escaping FlutterResult) {
+    public static func areLiveActivitiesEnabled(result: @escaping FlutterResult)
+    {
         guard #available(iOS 16.1, *), !ProcessInfo.processInfo.isiOSAppOnMac
         else {
             result(false)
@@ -136,7 +137,7 @@ public class LiveActivitiesManager {
                     await activity.end(
                         activityContent, dismissalPolicy: dismissalPolicy)
                 }
-            } 
+            }
 
             result(nil)
         }
@@ -146,7 +147,7 @@ public class LiveActivitiesManager {
         if !isAuthorizedCall(result: result) {
             return
         }
-        
+
         Task {
             for activity in Activity<LiveActivitiesAppAttributes>.activities {
                 await activity.end(nil, dismissalPolicy: .immediate)
@@ -154,12 +155,12 @@ public class LiveActivitiesManager {
             result(nil)
         }
     }
-    
+
     public static func getAllActivityIds(result: @escaping FlutterResult) {
         if !isAuthorizedCall(result: result) {
             return
         }
-        
+
         Task {
             var activityIds: [String] = []
             for activity in Activity<LiveActivitiesAppAttributes>.activities {

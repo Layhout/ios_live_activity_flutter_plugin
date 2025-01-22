@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  image: ^4.5.2
   plugin_platform_interface: ^2.0.2
 
 dev_dependencies:
@@ -39,15 +40,13 @@ flutter:
       # then add platforms following the instruction here:
       # https://flutter.dev/to/pubspec-plugin-platforms
       # -------------------
-      some_platform:
-        pluginClass: somePluginClass
       ios:
         pluginClass: LiveActivityPlugin
     # -------------------
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
-  #   - images/a_dot_burr.jpeg
+  #   - assets/images/
   #   - images/a_dot_ham.jpeg
   #
   # For details regarding assets in packages, see

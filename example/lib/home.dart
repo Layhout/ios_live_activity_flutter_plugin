@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
 
   void init() async {
     await LiveActivityManager.init();
-    print('🟢 ${await LiveActivityManager.isActivitiesAllowed()}');
+    debugPrint('🟢 ${await LiveActivityManager.isActivitiesAllowed()}');
   }
 
   void _testUpdateLiveActivity() async {
@@ -32,6 +32,13 @@ class _HomeState extends State<Home> {
       'description': 'Your order has been placed',
       'step': 0,
       'distance': 3,
+      // 'logo': LiveActivityFile.fromAsset(
+      //   'assets/images/coffee_hub.jpeg',
+      //   imageOption: LiveActivityImageFileOptions(
+      //     resizeHeight: 42,
+      //     resizeWidth: 42,
+      //   ),
+      // ),
     });
 
     setState(() {
@@ -41,35 +48,59 @@ class _HomeState extends State<Home> {
     await Future.delayed(const Duration(seconds: 5));
 
     await LiveActivityManager.updateLiveActivity(
-        activityId: _liveActivityResponse?.id ?? "",
-        data: {
-          'title': 'Preparing Order',
-          'description': 'We are preparing your order',
-          'step': 1,
-          'distance': 3,
-        });
+      activityId: _liveActivityResponse?.id ?? "",
+      data: {
+        'title': 'Preparing Order',
+        'description': 'We are preparing your order',
+        'step': 1,
+        'distance': 3,
+        // 'logo': LiveActivityFile.fromUrl(
+        //   'https://cdn.freebiesupply.com/logos/large/2x/starbucks-coffee-logo-png-transparent.png',
+        //   imageOption: LiveActivityImageFileOptions(
+        //     resizeHeight: 42,
+        //     resizeWidth: 42,
+        //   ),
+        // ),
+      },
+    );
 
     await Future.delayed(const Duration(seconds: 5));
 
     await LiveActivityManager.updateLiveActivity(
-        activityId: _liveActivityResponse?.id ?? "",
-        data: {
-          'title': 'Delivering Order',
-          'description': 'Delivering by 12:30 PM',
-          'step': 2,
-          'distance': 3,
-        });
+      activityId: _liveActivityResponse?.id ?? "",
+      data: {
+        'title': 'Delivering Order',
+        'description': 'Delivering by 12:30 PM',
+        'step': 2,
+        'distance': 3,
+        // 'logo': LiveActivityFile.fromUrl(
+        //   'https://awards.brandingforum.org/wp-content/uploads/2022/10/riY59TkM-1.png',
+        //   imageOption: LiveActivityImageFileOptions(
+        //     resizeHeight: 42,
+        //     resizeWidth: 42,
+        //   ),
+        // ),
+      },
+    );
 
     await Future.delayed(const Duration(seconds: 5));
 
     await LiveActivityManager.updateLiveActivity(
-        activityId: _liveActivityResponse?.id ?? "",
-        data: {
-          'title': 'Completed',
-          'description': 'Thank you for ordering with us! Enjoy!',
-          'step': 3,
-          'distance': 3,
-        });
+      activityId: _liveActivityResponse?.id ?? "",
+      data: {
+        'title': 'Completed',
+        'description': 'Thank you for ordering with us! Enjoy!',
+        'step': 3,
+        'distance': 3,
+        // 'logo': LiveActivityFile.fromUrl(
+        //   'https://play-lh.googleusercontent.com/Wvt2giF1A5rm1wrTolEvVOMrZJRcphhHC2BpTTePupgZtOws-GLZIImpO3eFYnylyaIh',
+        //   imageOption: LiveActivityImageFileOptions(
+        //     resizeHeight: 42,
+        //     resizeWidth: 42,
+        //   ),
+        // ),
+      },
+    );
 
     await Future.delayed(const Duration(seconds: 5));
 
@@ -79,7 +110,7 @@ class _HomeState extends State<Home> {
 
     await LiveActivityManager.endLiveActivity(
       activityId: _liveActivityResponse?.id ?? "",
-      endInSecond: const Duration(seconds: 5),
+      endIn: const Duration(seconds: 5),
     );
 
     setState(() {

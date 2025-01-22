@@ -46,7 +46,7 @@ unified_live_activity:
 [image or video here...]
 - Go to `Runner/info` and add `Support Live Activity` key with value `YES`
 [image or video here...]
-- Copy code **(DO NOT COPY FILE)** inside `live_activity_plugin/example/ios/LiveActivitiesApp/LiveActivitiesAppLiveActivity.swift` and paste inside `your_app/ios/LiveActivitiesApp/LiveActivitiesAppLiveActivity.swift`. The code contains predefine ui and data that is writen with [**SwiftUI**](https://developer.apple.com/xcode/swiftui/). To change UI and passed/consumable data, please prefer to [Modificaion Note](#modification-note)
+- Copy code inside `live_activity_plugin/example/ios/LiveActivitiesApp/LiveActivitiesAppLiveActivity.swift` and paste inside `your_app/ios/LiveActivitiesApp/LiveActivitiesAppLiveActivity.swift` **(DO NOT COPY FILE)**. The code contains predefine ui and data that is writen with [**SwiftUI**](https://developer.apple.com/xcode/swiftui/). To change UI and passed/consumable data, please prefer to [Modificaion Note](#modification-note)
 [image or video here...]
 - Open `Inspectors` -> `File Inspector`, at `Target Membership` click **Plus** icon and check `Runner`. Click **Save**
 [image or video here...]
@@ -91,7 +91,7 @@ Notice that the passed data is as follows:
 }
 ```
 
-This data is predefined and processed inside `live_activity_plugin/ios/Classes/LiveActivitiesController.swift` and `your_app/ios/LiveActivitiesApp/LiveActivitiesAppLiveActivity.swift`. Any additional data passed will also be processed accordingly. To customize how the data is processed, please refer to the [Modificaion Note](#modification-note) for guidance.
+This data is predefined and processed inside `your_app/ios/LiveActivitiesApp/LiveActivitiesAppLiveActivity.swift`. Any additional data passed will also be processed accordingly. To customize how the data is processed, please refer to the [Modificaion Note](#modification-note) for guidance.
 
 ### Update an activity
 
@@ -114,7 +114,7 @@ After ending the activity, the Live Activity can remain visible on the screen fo
 ```dart
 await LiveActivityManager.endLiveActivity(
     activityId: liveActivityResponse.id,
-    endInSecond: const Duration(seconds: 5),
+    endIn: const Duration(seconds: 5),
 );
 ```
 

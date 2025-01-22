@@ -1,5 +1,5 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:live_activity_plugin/live_activity_plugin.dart';
@@ -37,10 +37,8 @@ class LiveActivityManager {
     return _isInitialized;
   }
 
-  static int? _getTimeInMinutes(Duration? staleInMinutes) =>
-      (staleInMinutes?.inMinutes ?? 0) >= 1 ? staleInMinutes?.inMinutes : null;
-  static int? _getTimeInSeconds(Duration? staleInMinutes) =>
-      (staleInMinutes?.inSeconds ?? 0) >= 1 ? staleInMinutes?.inMinutes : null;
+  static int? _getIntFromSeconds(Duration? duration) =>
+      (duration?.inSeconds ?? 0) >= 1 ? duration?.inSeconds : null;
 
   static Future<void> init() async {
     if (_isInitialized) return;
@@ -87,15 +85,20 @@ class LiveActivityManager {
   }
 
   static Future<StartLiveActivityResponse?> startLiveActivity(
-      {Map<String, dynamic>? data, Duration? staleInMinutes}) async {
+      {required Map<String, dynamic> data, Duration? staleIn}) async {
     if (!_isAuthorizedCall) {
       return null;
     }
 
+    await LiveActivityFile.prepareFiles(data);
+
     try {
       dynamic result = await _platform.invokeMethod(
         LiveActivityActionEnum.startLiveActivity.name,
-        {...(data ?? {}), "staleInMinutes": _getTimeInMinutes(staleInMinutes)},
+        {
+          "dataJsonString": jsonEncode(data),
+          "staleIn": _getIntFromSeconds(staleIn)
+        },
       );
 
       return StartLiveActivityResponse.fromDynamicMap(result);
@@ -107,18 +110,20 @@ class LiveActivityManager {
 
   static Future<void> updateLiveActivity(
       {required String activityId,
-      Map<String, dynamic>? data,
-      Duration? staleInMinutes}) async {
+      required Map<String, dynamic> data,
+      Duration? staleIn}) async {
     if (!_isAuthorizedCall) {
       return;
     }
+
+    await LiveActivityFile.prepareFiles(data);
 
     try {
       await _platform.invokeMethod(
         LiveActivityActionEnum.updateLiveActivity.name,
         {
-          ...(data ?? {}),
-          "staleInMinutes": _getTimeInMinutes(staleInMinutes),
+          "dataJsonString": jsonEncode(data),
+          "staleIn": _getIntFromSeconds(staleIn),
           "activityId": activityId
         },
       );
@@ -130,19 +135,21 @@ class LiveActivityManager {
   static Future<void> endLiveActivity(
       {required String activityId,
       Map<String, dynamic>? data,
-      Duration? staleInMinutes,
-      Duration? endInSecond}) async {
+      Duration? staleIn,
+      Duration? endIn}) async {
     if (!_isAuthorizedCall) {
       return;
     }
+
+    if (data != null) await LiveActivityFile.prepareFiles(data);
 
     try {
       await _platform.invokeMethod(
         LiveActivityActionEnum.endLiveActivity.name,
         {
-          ...(data ?? {}),
-          "staleInMinutes": _getTimeInMinutes(staleInMinutes),
-          "endInSecond": _getTimeInSeconds(endInSecond),
+          "dataJsonString": data != null ? jsonEncode(data) : null,
+          "staleIn": _getIntFromSeconds(staleIn),
+          "endIn": _getIntFromSeconds(endIn),
           "activityId": activityId,
         },
       );

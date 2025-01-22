@@ -42,11 +42,11 @@ public class LiveActivitiesController: LiveActivitiesControllerProtocol {
             }
         }
     }
-    
-    public static func isActivitiesAllowed(result: @escaping FlutterResult){
+
+    public static func isActivitiesAllowed(result: @escaping FlutterResult) {
         LiveActivitiesManager.areLiveActivitiesEnabled(result: result)
     }
-    
+
     public static func getAllActivityIds(result: @escaping FlutterResult) {
         LiveActivitiesManager.getAllActivityIds(result: result)
     }
@@ -55,12 +55,13 @@ public class LiveActivitiesController: LiveActivitiesControllerProtocol {
         result: @escaping FlutterResult, data: [String: Any]
     ) {
         let dataJsonString: String = data["dataJsonString"] as? String ?? ""
-        let staleInMinutes: Int? = data["staleInMinutes"] as? Int ?? nil
+        let staleIn: Int? = data["staleIn"] as? Int ?? nil
 
-        let initialState = LiveActivitiesAppAttributes.ContentState(dataJsonString: dataJsonString)
+        let initialState = LiveActivitiesAppAttributes.ContentState(
+            dataJsonString: dataJsonString)
 
         LiveActivitiesManager.startLiveActivity(
-            result: result, state: initialState, staleIn: staleInMinutes)
+            result: result, state: initialState, staleIn: staleIn)
     }
 
     public static func updateLiveActivity(
@@ -69,13 +70,14 @@ public class LiveActivitiesController: LiveActivitiesControllerProtocol {
         let activityId: String = data["activityId"] as? String ?? ""
 
         let dataJsonString: String = data["dataJsonString"] as? String ?? ""
-        let staleInMinutes: Int? = data["staleInMinutes"] as? Int ?? nil
+        let staleIn: Int? = data["staleIn"] as? Int ?? nil
 
-        let updatedState = LiveActivitiesAppAttributes.ContentState(dataJsonString: dataJsonString)
+        let updatedState = LiveActivitiesAppAttributes.ContentState(
+            dataJsonString: dataJsonString)
 
         LiveActivitiesManager.updateLiveActivity(
             result: result, activityId: activityId, state: updatedState,
-            staleIn: staleInMinutes)
+            staleIn: staleIn)
     }
 
     public static func endLiveActivity(
@@ -83,26 +85,31 @@ public class LiveActivitiesController: LiveActivitiesControllerProtocol {
     ) {
         let activityId: String = data["activityId"] as? String ?? ""
 
-        let dataJsonString: String = data["dataJsonString"] as? String ?? ""
-        let staleInMinutes: Int? = data["staleInMinutes"] as? Int ?? nil
-        let endInSeconds: Int? = data["endInSecond"] as? Int ?? nil
+        let dataJsonString: String? = data["dataJsonString"] as? String ?? nil
+        let staleIn: Int? = data["staleIn"] as? Int ?? nil
+        let endIn: Int? = data["endIn"] as? Int ?? nil
         let dismissalPolicy: ActivityUIDismissalPolicy =
-            endInSeconds != nil
+            endIn != nil
             ? .after(
                 Calendar.current.date(
-                    byAdding: .second, value: endInSeconds!, to: Date())!)
+                    byAdding: .second, value: endIn!, to: Date())!)
             : .immediate
 
-        let endedState = LiveActivitiesAppAttributes.ContentState(dataJsonString: dataJsonString)
+        var endedState: LiveActivitiesAppAttributes.ContentState? = nil
+        
+        if dataJsonString != nil {
+            endedState = LiveActivitiesAppAttributes.ContentState(
+                dataJsonString: dataJsonString!)
+        }
 
         LiveActivitiesManager.endLiveActivity(
             result: result,
             activityId: activityId,
             state: endedState,
-            staleIn: staleInMinutes,
+            staleIn: staleIn,
             dismissalPolicy: dismissalPolicy)
     }
-    
+
     public static func endAllLiveActivity(result: @escaping FlutterResult) {
         LiveActivitiesManager.endAllLiveActivity(result: result)
     }
