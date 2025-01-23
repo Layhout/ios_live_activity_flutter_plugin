@@ -61,7 +61,7 @@ class LiveActivityFile {
     return compressedBytes;
   }
 
-  static prepareFiles(Map<String, dynamic> data) async {
+  static Future<void> prepareFiles(Map<String, dynamic> data) async {
     for (String k in data.keys) {
       final v = data[k];
       if (v is LiveActivityFile) {

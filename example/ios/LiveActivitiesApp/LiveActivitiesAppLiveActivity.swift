@@ -33,8 +33,6 @@ struct LiveActivitiesAppLiveActivity: Widget {
                 jsonString: context.state.dataJsonString, key: "step")
             let distance: Int = DataProcess.int(
                 jsonString: context.state.dataJsonString, key: "distance")
-            //            let logo: String = DataProcess.string(
-            //                jsonString: context.state.dataJsonString, key: "logo")
 
             VStack(spacing: 12) {
                 HStack {
@@ -47,21 +45,6 @@ struct LiveActivitiesAppLiveActivity: Widget {
                             .foregroundStyle(.white)
                             .opacity(0.7)
                     }.frame(maxWidth: .infinity, alignment: .leading)
-                    //                    if let logoData = Data(
-                    //                        base64Encoded: logo,
-                    //                        options: .ignoreUnknownCharacters)
-                    //                    {
-                    //                        let image = UIImage(data: logoData)
-                    //                        Image(uiImage: image ?? UIImage()).resizable()
-                    //                            .frame(width: 42, height: 42)
-                    //                            .clipShape(.rect(cornerRadius: 8))
-                    //                    }
-                    //                    AsyncImage(
-                    //                        url: URL(
-                    //                            string: "https://cdn.freebiesupply.com/logos/large/2x/starbucks-coffee-logo-png-transparent.png"
-                    //                        )
-                    //                    ).frame(width: 42, height: 42)
-                    //                        .clipShape(.rect(cornerRadius: 8))
                     Image("coffee_hub").resizable()
                         .frame(width: 42, height: 42)
                         .clipShape(.rect(cornerRadius: 8))
@@ -215,7 +198,6 @@ struct LiveActivityData: Decodable {
     var distance: Int?
     var title: String?
     var description: String?
-    var logo: String?
 
     subscript(key: String) -> Any? {
         get {
@@ -228,8 +210,6 @@ struct LiveActivityData: Decodable {
                 return self.title
             case "description":
                 return self.description
-            case "logo":
-                return self.logo
             default:
                 return nil
             }
