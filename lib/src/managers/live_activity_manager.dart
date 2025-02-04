@@ -24,12 +24,6 @@ class LiveActivityManager {
   static bool _isInitialized = false;
   static late MethodChannel _platform;
   static bool get _isAuthorizedCall {
-    if (!Platform.isIOS) {
-      // TODO: Explore alternative options for Android.
-      debugPrint('Live Activity is currently supported only on iOS.');
-      return false;
-    }
-
     if (!_isInitialized) {
       debugPrint('LiveActivityManager is not initialized');
     }

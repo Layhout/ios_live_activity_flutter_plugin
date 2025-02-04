@@ -18,8 +18,7 @@ void main() {
       (WidgetTester tester) async {
     await LiveActivityManager.init();
     final bool allowed = await LiveActivityManager.isActivitiesAllowed();
-    // The version string depends on the host platform running the test, so
-    // just assert that some non-empty string is returned.
+
     expect(allowed.runtimeType, bool);
   });
 }

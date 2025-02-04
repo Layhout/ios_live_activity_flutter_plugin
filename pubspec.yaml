@@ -42,6 +42,9 @@ flutter:
       # -------------------
       ios:
         pluginClass: LiveActivityPlugin
+      android:
+        package: com.example.live_activity_plugin
+        pluginClass: LiveActivityPlugin
     # -------------------
 
   # To add assets to your plugin package, add an assets section, like this:

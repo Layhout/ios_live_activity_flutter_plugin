@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:live_activity_plugin/live_activity_plugin.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -22,6 +23,10 @@ class _HomeState extends State<Home> {
   }
 
   void init() async {
+    if (await Permission.notification.isGranted != true) {
+      await Permission.notification.request();
+    }
+
     await LiveActivityManager.init();
     debugPrint('🟢 ${await LiveActivityManager.isActivitiesAllowed()}');
   }
@@ -32,13 +37,6 @@ class _HomeState extends State<Home> {
       'description': 'Your order has been placed',
       'step': 0,
       'distance': 3,
-      // 'logo': LiveActivityFile.fromAsset(
-      //   'assets/images/coffee_hub.jpeg',
-      //   imageOption: LiveActivityImageFileOptions(
-      //     resizeHeight: 42,
-      //     resizeWidth: 42,
-      //   ),
-      // ),
     });
 
     setState(() {
@@ -54,13 +52,6 @@ class _HomeState extends State<Home> {
         'description': 'We are preparing your order',
         'step': 1,
         'distance': 3,
-        // 'logo': LiveActivityFile.fromUrl(
-        //   'https://cdn.freebiesupply.com/logos/large/2x/starbucks-coffee-logo-png-transparent.png',
-        //   imageOption: LiveActivityImageFileOptions(
-        //     resizeHeight: 42,
-        //     resizeWidth: 42,
-        //   ),
-        // ),
       },
     );
 
@@ -73,13 +64,6 @@ class _HomeState extends State<Home> {
         'description': 'Delivering by 12:30 PM',
         'step': 2,
         'distance': 3,
-        // 'logo': LiveActivityFile.fromUrl(
-        //   'https://awards.brandingforum.org/wp-content/uploads/2022/10/riY59TkM-1.png',
-        //   imageOption: LiveActivityImageFileOptions(
-        //     resizeHeight: 42,
-        //     resizeWidth: 42,
-        //   ),
-        // ),
       },
     );
 
@@ -92,13 +76,6 @@ class _HomeState extends State<Home> {
         'description': 'Thank you for ordering with us! Enjoy!',
         'step': 3,
         'distance': 3,
-        // 'logo': LiveActivityFile.fromUrl(
-        //   'https://play-lh.googleusercontent.com/Wvt2giF1A5rm1wrTolEvVOMrZJRcphhHC2BpTTePupgZtOws-GLZIImpO3eFYnylyaIh',
-        //   imageOption: LiveActivityImageFileOptions(
-        //     resizeHeight: 42,
-        //     resizeWidth: 42,
-        //   ),
-        // ),
       },
     );
 
